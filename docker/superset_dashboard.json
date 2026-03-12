@@ -1,0 +1,7 @@
+{
+  "dashboard": {
+    "dashboard_title": "Event Platform - Quick Overview",
+    "slices": []
+  },
+  "description": "Placeholder export: create charts for hourly event volume, top events, and active users, then export from Superset and replace this file."
+}

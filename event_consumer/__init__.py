@@ -1,0 +1,1 @@
+"""Event consumer service package."""

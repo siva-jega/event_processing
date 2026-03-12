@@ -1,0 +1,3 @@
+[submodule "shared"]
+	path = shared
+	url = c:/Users/harin/event_processing_platform/git-repos/shared.git

@@ -1,0 +1,26 @@
+[project]
+name = "analytics-service"
+version = "0.1.0"
+description = "Analytics service for the event processing platform"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "psycopg2-binary",
+    "prometheus-client",
+    "pydantic",
+    "pydantic-settings",
+    "redis[hiredis]",
+    "opentelemetry-instrumentation-fastapi",
+    "opentelemetry-exporter-otlp",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["analytics_service"]

@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "1234567-89ab-cdef-0123-456789abcdef",
+		"name": "Event Processing Platform",
+		"description": "Collection for testing the Event Processing Platform services",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ingestion Service",
+			"item": [
+				{
+					"name": "Ingest Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": \"test_user_123\",\n    \"event_name\": \"test_event\",\n    \"metadata\": {\n        \"source\": \"postman_test\",\n        \"environment\": \"local\",\n        \"test_run\": 1\n    },\n    \"timestamp\": \"{{$isoTimestamp}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8004/events",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8004",
+							"path": ["events"]
+						},
+						"description": "Send an event to the ingestion service"
+					}
+				}
+			]
+		},
+		{
+			"name": "Analytics Service",
+			"item": [
+				{
+					"name": "Get Event Count",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8002/analytics/events/count?from_ts={{from_ts}}&to_ts={{to_ts}}",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8002",
+							"path": ["analytics", "events", "count"],
+							"query": [
+								{
+									"key": "from_ts",
+									"value": "{{from_ts}}"
+								},
+								{
+									"key": "to_ts",
+									"value": "{{to_ts}}"
+								}
+							]
+						},
+						"description": "Get count of events within a time range"
+					}
+				},
+				{
+					"name": "Get Active Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8002/analytics/users/active?window=1h",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8002",
+							"path": ["analytics", "users", "active"],
+							"query": [
+								{
+									"key": "window",
+									"value": "1h",
+									"description": "Time window (e.g., 24h, 60m)"
+								}
+							]
+						},
+						"description": "Get count of active users within a time window"
+					}
+				},
+				{
+					"name": "Get Top Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8002/analytics/top-events?limit=5",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8002",
+							"path": ["analytics", "top-events"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "Number of top events to return"
+								}
+							]
+						},
+						"description": "Get most frequent events"
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Set timestamps for analytics queries",
+					"const now = new Date();",
+					"const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000));",
+					"",
+					"pm.environment.set('from_ts', oneHourAgo.toISOString());",
+					"pm.environment.set('to_ts', now.toISOString());"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "from_ts",
+			"value": ""
+		},
+		{
+			"key": "to_ts",
+			"value": ""
+		}
+	]
+}
